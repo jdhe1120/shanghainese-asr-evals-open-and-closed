@@ -1,0 +1,21 @@
+[project]
+name = "shanghainese-evals"
+version = "0.1.0"
+description = "Small Shanghainese (Wu) ASR eval harness"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch>=2.6",
+    "torchaudio>=2.6",            # Fun-ASR-Nano's feature extractor uses torchaudio.compliance.kaldi
+    "transformers>=5.17",         # Fun-ASR-Nano-2512-hf needs 5.17; Qwen3-ASR -hf
+    "accelerate>=1.2",
+    "librosa>=0.10",
+    "soundfile>=0.12",
+    "opencc-python-reimplemented>=0.1.7",
+    "dataoceanai-dolphin>=20260513",  # NOT `dolphin` (an unrelated InSAR package)
+    "torchcodec>=0.17.0",
+    "modal>=1.6",
+    "pyarrow>=26.0.0",
+]
+
+[tool.uv]
+package = false

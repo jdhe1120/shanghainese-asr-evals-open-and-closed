@@ -1,0 +1,90 @@
+# Canonical Wu spelling: the one convention the STRICT score holds every model to.
+#
+# Decided 2026-10-14: follow one teaching convention, Qian Nairong's 《上海话大词典》 (勿 for veq, 伐 only for
+# the question particle va, 搿, 个, 我, 人, 啥 ...), which matches the Wu Chinese Society's recommended characters. Where
+# it gives no clear answer, take the spelling most sources and models already use (葛末, 辣海). The strict score compares the model's text with the reference rewritten into this convention;
+# the folded score still accepts any spelling in rules/wu_folds.toml (it asks "did the model hear the word?").
+#
+# Only the references are rewritten, at scoring time (clips/*.txt keep the corpus text, so the cache stays valid).
+# Each rule is a regular expression matching ONE character (lookarounds allowed for context) and `to` is one character,
+# so positions never shift. Rules run in order. Change a spelling here and re-score with
+#   uv run python -m shaeval run --no-ui --models all --cached-only
+#
+# Deliberately NOT rewritten (no safe rule, or not a spelling question):
+#   葛末 kept as is (MagicData, SSC and 6 of 7 models write it); 那/㑚 'you (pl.)' (那 is also Mandarin 'that');
+#   二/两, 搭/的, 也/还 (reference errors or meaning, see TODO reference corrections); 的/得 in 有得; 伊/埃; 了/唻; 迭/搿.
+
+[[rewrite]]
+pattern = '吾'
+to = "我"
+note = "ngu 'I': Qian and 6 of 7 models write 我"
+
+[[rewrite]]
+pattern = '拧'
+to = "人"
+note = "nyin 'person'"
+
+[[rewrite]]
+pattern = '撒(?![谎娇])'
+to = "啥"
+note = "sa 'what' (撒谎 left alone)"
+
+[[rewrite]]
+pattern = '弗'
+to = "勿"
+note = "veq 'not'"
+
+[[rewrite]]
+pattern = '(?<!对)伐(?![，。？！、,.?!…；;：:\s]|$|[啦啊呀哦呢])|(?<=对)伐(?=[起住])'
+to = "勿"
+note = "veq 'not': MagicData writes 伐 for both veq and the particle va. It is va (kept as 伐) at the end of a clause, before a final particle (伐啦), or in 对伐 'right?'; otherwise veq (伐晓得 勿晓得, 是伐是 是勿是, 伐来塞 勿来三, 对伐起 对勿起)"
+
+[[rewrite]]
+pattern = '(?<=[^，。？！、,.?!…；;：:\s])呃'
+to = "个"
+note = "gheh, attributive / sentence-final (老好个): MagicData writes 呃. A clause-initial 呃 is the filler 'uh' and stays"
+
+[[rewrite]]
+pattern = '[喃呐]'
+to = "呢"
+note = "ne, topic / question particle"
+
+[[rewrite]]
+pattern = '(?<=能)噶'
+to = "介"
+note = "搿能介 'like this' (Qian 介; 5 of 7 models)"
+
+[[rewrite]]
+pattern = '(?<=来)塞'
+to = "三"
+note = "勿来三 'can't manage'"
+
+[[rewrite]]
+pattern = '拔'
+to = "拨"
+note = "peq 'give'"
+
+[[rewrite]]
+pattern = '(?<!独)特(?![别地意殊色])'
+to = "脱"
+note = "teq, completive (忘记脱, 减脱点); 特别 etc. left alone"
+
+[[rewrite]]
+pattern = '哴'
+to = "浪"
+note = "lang 'on' (网浪向). 上 for lang is left alone: it can't be told from 上 zang (confirmed 2026-11-04)"
+
+[[rewrite]]
+pattern = '勒(?=[，。？！…,.?!；;]|$|末)'
+to = "了"
+note = "sentence-final leq (SSC writes 死脱勒; the convention writes 了). 勒 as the complement marker (吃勒好) is left alone (confirmed 2026-11-04)"
+
+[[rewrite]]
+pattern = '(?<=侬)假(?=勿)'
+to = "介"
+note = "ka 'so' (侬假勿开心, SSC's spelling; Qian 介). 假 'fake' (假使, 假头套) is left alone (2026-11-04)"
+
+[[rewrite]]
+pattern = '(?<![^，。？！,.?!])闲(?=[，。？！,.?!])'
+to = "哎"
+note = "interjection standing alone between commas (SSC writes 闲，搿里向…); 闲话 is left alone (2026-11-04)"

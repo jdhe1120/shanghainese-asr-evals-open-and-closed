@@ -1,0 +1,37 @@
+# Results to read with care. Shown as ‡ after the score (results page, results/summary.md, the README), with the note
+# as the explanation. set is a clip set (wubench, magicdata, ssc) or "*".
+#   caution  familiar data: evidence the set closely resembles the model's training data (same lab's collection, same transcription convention), but not the
+#            clear sign of training on the test clips that the Cantonese evals flag as "contaminated"; none here is.
+#
+# Check (2026-11-04, rechecked 2026-11-05; same test as the Cantonese evals): share of clips whose output matches the
+# reference exactly, punctuation included (sentence-final mark ignored: MagicData strips it), after NFKC and t2s. On wubench the references have no punctuation, so it equals "exactly right".
+
+[[flag]]
+model = "cn-multidialect"
+set = "magicdata"
+kind = "caution"
+note = "Writes MagicData's own spellings and punctuation (撒 for 啥, 特 for 脱, commas in the same places): 15% of clips match the reference exactly, punctuation included, against 0-2% for every other model. It doesn't copy a known reference typo (巨 for 贵), so it isn't recalling these clips, but it may have trained on text transcribed the way MagicData transcribes."
+
+[[flag]]
+model = "cn-multidialect"
+set = "wubench"
+kind = "caution"
+note = "By ASLP@NPU, the lab that built WenetSpeech-Wu-Bench (its held-out test set). Its model card lists ~100k hours of unnamed Mandarin-dialect training data, which likely includes the lab's own WenetSpeech-Wu. The lab's four models get 10-19% of clips exactly right, every other model 3% or less."
+
+[[flag]]
+model = "whisper-wu"
+set = "wubench"
+kind = "caution"
+note = "By ASLP@NPU, the lab that built WenetSpeech-Wu-Bench (its held-out test set); trained on WenetSpeech-Wu, likely from the same kinds of sources. The lab's four models get 10-19% of clips exactly right, every other model 3% or less."
+
+[[flag]]
+model = "u2pp-wu"
+set = "wubench"
+kind = "caution"
+note = "By ASLP@NPU, the lab that built WenetSpeech-Wu-Bench (its held-out test set); trained on WenetSpeech-Wu, likely from the same kinds of sources. The lab's four models get 10-19% of clips exactly right, every other model 3% or less. Its jump from 17.9% on MagicData to 12.3% here is the largest of any model."
+
+[[flag]]
+model = "step-audio2-wu"
+set = "wubench"
+kind = "caution"
+note = "By ASLP@NPU, the lab that built WenetSpeech-Wu-Bench (its held-out test set); fine-tuned on WenetSpeech-Wu, likely from the same kinds of sources. The lab's four models get 10-19% of clips exactly right, every other model 3% or less."

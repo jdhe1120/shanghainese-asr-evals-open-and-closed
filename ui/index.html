@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shanghainese Evals</title>
+<style>
+/* Same layout as the Cantonese evals' page (ui/index.html there), without its simplified/traditional switch. */
+:root{--bg:#fafaf8;--fg:#1c1c1a;--mut:#6b6b66;--card:#fff;--line:#e4e3de;--acc:#2a6df4;--ok:#1a7f4b;--bad:#c4321f;--warn:#a86a00;
+--sub:#fde2dc;--del:#fff0c2;--ins:#d9ecff}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ecebe6;--mut:#9a9992;--card:#1f1f1d;--line:#34332f;--acc:#6b9cff;--ok:#4cc38a;--bad:#ff7b66;--warn:#e0a63a;
+--sub:#5a2a22;--del:#574a1a;--ins:#1d3a5c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"PingFang SC",sans-serif}
+main{max-width:1280px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:20px;margin:0 0 4px}
+.mut{color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;border:1px solid var(--line)}
+.pill.running{color:var(--acc);border-color:var(--acc)}.pill.finished{color:var(--ok);border-color:var(--ok)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:10px}
+.bar>div{height:100%;background:var(--acc);transition:width .3s}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top;font-variant-numeric:tabular-nums}
+th{font-weight:600;font-size:13px;color:var(--mut)}
+.scroll{overflow-x:auto}
+.cell{cursor:pointer;white-space:nowrap}.cell:hover{background:var(--bg)}
+.cer-good{color:var(--ok)}.cer-mid{color:var(--warn)}.cer-bad{color:var(--bad)}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:s 1s linear infinite;vertical-align:-1px}
+@keyframes s{to{transform:rotate(360deg)}}
+.seg{border-radius:3px;padding:0 1px}
+.sub{background:var(--sub)}.del{background:var(--del)}.ins{background:var(--ins)}
+.diff{font-size:17px;line-height:1.9;word-break:break-all}
+.row{margin:10px 0}.lbl{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+.tabs button,.tog button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--fg);padding:3px 12px;cursor:pointer}
+.tog button:first-child{border-radius:6px 0 0 6px}.tog button:last-child{border-radius:0 6px 6px 0;border-left:0}
+.tog button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+#gridbox{max-height:70vh;overflow:auto;border-top:1px solid var(--line)}  /* scrolls inside, so the page footer stays reachable */
+#grid tr:first-child th{position:sticky;top:0;background:var(--card);z-index:2}
+#grid tr.group td{position:sticky;top:30px;z-index:1}
+.qrow{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.qchip{border:1px solid var(--line);border-radius:99px;padding:1px 9px;font-size:12px}.qchip.running{border-color:var(--acc);color:var(--acc)}
+.qchip.done{color:var(--ok);border-color:var(--ok)}.qchip.stopped{color:var(--warn);border-color:var(--warn)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tabs button{border-radius:99px}.tabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.tabs button .small{color:inherit;opacity:.7}#browser select{font:inherit;font-size:13px}
+#summary th.brw{cursor:pointer}#summary th.brw:hover .dsn{text-decoration:underline}
+.err{color:var(--bad);font-size:13px;white-space:pre-wrap}
+audio{width:100%;max-width:420px;height:34px}
+.big{font-size:16px;font-weight:600}.warn{color:var(--warn)}.group td{background:var(--bg);padding-top:10px;padding-bottom:10px;border-top:2px solid var(--line)}.small{font-size:12px;color:var(--mut)}.story td{background:var(--bg);padding-top:8px;padding-bottom:8px}.tw{cursor:pointer;white-space:nowrap}.indent{padding-left:28px}.part td{font-size:14px}
+.legend span{margin-right:10px;font-size:13px}
+.cell.selA{box-shadow:inset 0 0 0 2px var(--acc)}.cell.selB{box-shadow:inset 0 0 0 2px var(--warn)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.chips button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:2px 10px;cursor:pointer}
+.chips button.on{border-color:var(--warn);box-shadow:inset 0 0 0 1px var(--warn)}.tagA,.tagB{display:inline-block;width:18px;text-align:center;border-radius:4px;color:#fff;font-size:12px;font-weight:600;margin-right:6px}.tagA{background:var(--acc)}.tagB{background:var(--warn)}
+#summary{table-layout:fixed}  /* equal columns: the test sets share the width */
+#summary th:first-child{width:220px}
+#summary td,#summary th{white-space:nowrap}#summary th{overflow:hidden;text-overflow:ellipsis}
+#summary .cnt{display:block;font-size:11px;line-height:1.2}#summary td:first-child{white-space:normal}#summary th{white-space:normal;vertical-align:bottom}
+.sect td{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;padding-top:12px;border-bottom:none}
+.flag{cursor:help;font-size:13px;color:var(--mut)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media (max-width:760px){.pair{grid-template-columns:1fr}}
+/* clip detail: a sheet fixed to the bottom of the window, so it shows without scrolling; the table above stays usable */
+#detail{position:fixed;left:0;right:0;bottom:0;margin:0;max-height:55vh;overflow:auto;z-index:10;border-radius:12px 12px 0 0;
+  box-shadow:0 -6px 24px rgba(0,0,0,.18);padding:14px max(16px,calc((100vw - 1100px)/2 + 16px)) 18px}
+body.sheet main{padding-bottom:58vh}
+.close{float:right;font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:6px;padding:2px 10px;cursor:pointer}
+.foot a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div><h1>Shanghainese Evals</h1><div class="mut" id="sub">waiting for a run…</div></div>
+    <div><span class="pill" id="state">idle</span></div>
+  </div>
+  <div class="card" id="progress" hidden>
+    <div id="now"></div>
+    <div class="bar"><div id="fill" style="width:0"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="top"><b>Scores</b>
+      <span><span class="tog"><button id="t-strict" class="on" title="the reference in one spelling convention (rules/wu_canonical.toml: 勿 not 伐 for veq, 个, 我, 人 …); the model has to write it">strict</button><button id="t-equiv" title="the same word spelled differently counts as a match (rules/wu_folds.toml: pairs the author judged reasonable)">fold 呃/个, 勿/伐…</button></span>
+      <span class="tog" style="margin-left:8px"><button id="t-numoff" class="on">digits as written</button><button id="t-numon">digits → 中文 (2016 → 二零一六)</button></span>
+      <span class="tog" style="margin-left:8px"><button id="t-corpus" class="on" title="all errors ÷ all characters in the set: long clips weigh more (the usual way speech-recognition papers report CER)">corpus CER</button><button id="t-mean" title="the average of each clip's own CER: every clip counts the same, so short clips weigh more (the README's headline, as in the community Cantonese benchmark)">average clip CER</button></span></span>
+    </div>
+    <div class="scroll"><table id="summary"></table></div>
+    <div class="mut" style="font-size:13px;margin-top:8px">
+      <b>Strict</b> rewrites the reference into one teaching spelling (Qian Nairong's 《上海话大词典》), and the model has to write it. <b>Fold</b> counts the same word spelled differently as a match (我/吾, 勿/弗); a different or Mandarin word stays an error. <b>Corpus CER</b> is all errors ÷ all characters in the set, so long clips weigh more (the usual way speech-recognition papers report CER). <b>Average clip CER</b> averages each clip's own CER, so every clip counts the same (the README's headline); it runs higher when a model fails on short clips. Test sets are scored separately, never pooled. A model that hasn't covered every clip shows <span class="warn">n/N</span>. A gap of a point or two between models is within noise: read the diffs.
+    </div>
+  </div>
+
+  <div class="card" id="browser">
+    <div class="top"><b>Browse clips</b>
+      <label class="small mut">sort <select id="sort"><option value="order">clip order</option><option value="worst">worst overall first</option><option value="best">best overall first</option><option value="spread">most disagreement first</option><option value="agree">least disagreement first</option></select></label></div>
+    <div class="tabs" id="tabs"></div>
+    <div class="mut small" style="margin:8px 0 4px">Pick a test set here, or click its name in the Scores table above. Every model's score on every clip of one set; ▸ opens a conversation or text into its clips. Click a score to hear the clip and see its diff against the reference, then pick another model in that panel to compare the two. "Most disagreement" puts clips where models differ most at the top; "worst overall" finds clips every model gets wrong, often a problem with the clip itself.</div>
+    <div class="scroll" id="gridbox"><table id="grid"></table></div>
+  </div>
+
+  <div class="card"><b>Models</b><table id="models"></table></div>
+
+
+  <div class="card" id="detail" hidden></div>
+</main>
+<script>
+let doc=null, equiv=false, nums=false, sel=null, cmp=null;  // sel=[model, clip]; cmp = second model on the same clip
+const openStories=new Set();  // Browse: conversations / SSC texts start closed
+let browse='', sortBy='order';  // the set shown in Browse clips, and its row order
+try{ browse=localStorage.getItem('browse')||''; sortBy=localStorage.getItem('sortBy')||'order' }catch(e){}
+const remember=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let useMean=false;  // headline CER: corpus (all errors / all characters) by default, or the mean of per-clip CER
+try{ useMean=localStorage.getItem('cerMean')==='1' }catch(e){}
+const setMean=v=>{useMean=v;remember('cerMean',v?'1':'0');render()};
+const info=m=>(doc&&doc.modelInfo&&doc.modelInfo[m])||{};
+const nm=m=>esc(info(m).label||m);
+const base=m=>nm(m).split(' (')[0];
+// short model names for narrow headers and chips; full names on hover
+const SHORTM={'step-audio2-wu':'Step-Audio2','u2pp-wu':'U2pp','whisper-wu':'Whisper-Wu','cn-multidialect':'CN-MultiDialect',
+              'qwen3-asr-stock':'Qwen3','qwen3-omni':'Omni','qwen3-omni-wu':'Omni + Wu prompt','dolphin-cn':'Dolphin','fun-asr-nano':'Fun-ASR','azure-wuu':'Azure','gemini-argon':'Gemini 4 Argon'};
+const mname=m=>SHORTM[m]||base(m);
+const key=()=>equiv?(nums?'equivNum':'equiv'):(nums?'num':'strict');
+const $=id=>document.getElementById(id);
+const pct=x=>x==null?'–':(x*100).toFixed(1)+'%';
+const cls=x=>x==null?'':x<.08?'cer-good':x<.2?'cer-mid':'cer-bad';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('t-strict').onclick=()=>{equiv=false;render()};
+$('t-equiv').onclick=()=>{equiv=true;render()};
+$('t-numoff').onclick=()=>{nums=false;render()};
+$('t-numon').onclick=()=>{nums=true;render()};
+$('t-corpus').onclick=()=>setMean(false);
+$('t-mean').onclick=()=>setMean(true);
+
+function diffHtml(d, side){
+  return d.map(([k,r,h])=>{
+    if(k==='eq') return esc(side==='ref'?r:h);  // folded matches can differ between the sides
+    if(side==='ref') return k==='ins'?'':`<span class="seg ${k}">${esc(r)}</span>`;
+    return k==='del'?'':`<span class="seg ${k}">${esc(h)}</span>`;
+  }).join('');
+}
+function render(){
+  if(!doc) return;
+  $('t-strict').classList.toggle('on',!equiv);$('t-equiv').classList.toggle('on',equiv);
+  $('t-numoff').classList.toggle('on',!nums);$('t-numon').classList.toggle('on',nums);
+  $('t-corpus').classList.toggle('on',!useMean);$('t-mean').classList.toggle('on',useMean);
+  const cells=doc.cells, models=doc.models, clips=doc.clips;
+  // doc.snapshot: no local run, so the server rebuilt the committed results (results/per_clip.csv); nothing is running
+  $('sub').textContent=doc.snapshot?`published results (results/per_clip.csv) · ${clips.length} clips · no audio here: run the models yourself (see the README) and this page shows your run instead`
+    :`run ${doc.runId} · clip set ${doc.clipSetVersion} · ${clips.length} clips`;
+  const st=$('state');st.textContent=doc.snapshot?'results':doc.state;st.className='pill '+(doc.snapshot?'finished':doc.state);
+  $('progress').hidden=!!doc.snapshot||doc.state!=='running';  // only while a run is transcribing
+  // One bar for the whole queue (doc.work: every model this run still has to transcribe), a time estimate from each
+  // model's own pace (local models run one after another, hosted ones alongside them), and a chip per queued model.
+  const w=doc.work||{total:0,done:0}, wm=w.models||{}, qs=Object.keys(wm), left=w.total-w.done;
+  $('fill').style.width=(w.total?100*w.done/w.total:100)+'%';
+  const rem=m=>(wm[m].total-wm[m].done)*(wm[m].secPerClip||0);
+  const unknown=qs.some(m=>wm[m].total>wm[m].done&&!wm[m].secPerClip);
+  const eta=Math.max(qs.filter(m=>wm[m].local).reduce((a,m)=>a+rem(m),0),...qs.filter(m=>!wm[m].local).map(rem),0);
+  const dur=t=>t<60?'under a minute':t<3600?`about ${Math.round(t/60)} min`:`about ${Math.floor(t/3600)} h ${Math.round(t%3600/60)} min`;
+  const headTxt=doc.state!=='running'?`run finished · ${w.done.toLocaleString()} transcribed`:
+    !w.total?'nothing to transcribe: every result is cached':
+    `<span class="spin"></span> <b>${left.toLocaleString()}</b> of ${w.total.toLocaleString()} transcriptions left${left?` · ${unknown?'estimating the time…':dur(eta)+' to go'}`:''}`;
+  const now=[].concat(doc.current||[]).map(c=>`<b>${mname(c.model)}</b> on ${c.clip}`).join(' · ');
+  const chip=m=>{const x=wm[m];const tag=x.state==='done'?'✓ done':x.state==='stopped'?'stopped':`${x.done}/${x.total}`;
+    return `<span class="qchip ${x.state}" title="${nm(m)}${x.secPerClip?` · ${x.secPerClip.toFixed(1)} s per clip`:''}">${mname(m)} <span class="small">${tag}</span></span>`};
+  const queue=qs.length?`<div class="qrow">${now?`<span class="mut small">now</span> ${now} <span class="mut small" style="margin-left:10px">queue</span> `:'<span class="mut small">queue</span> '}${qs.map(chip).join('')}</div>`:'';
+  // cells no run has ever filled and none is queued for: models never run on part of the table
+  const notRun=models.map(m=>[m,clips.filter(c=>c.aggregate&&cells[m][c.id].status==='skipped').length]).filter(([,n])=>n);
+  const notTxt=notRun.length?`<div class="small mut" style="margin-top:6px">not run on (no results, not queued): ${notRun.map(([m,n])=>`${mname(m)} ${n.toLocaleString()} clips`).join(' · ')}</div>`:'';
+  $('now').innerHTML=headTxt+queue+notTxt;
+
+  const k=key();
+  const storyOf=id=>id.slice(0,id.lastIndexOf('-'));
+  // one group per test set (clip.set), in this order; MagicData and SSC open into conversations / texts in Browse clips
+  const GROUPS=[{id:'ssc',label:'One reader',title:'One reader: Shanghai Spoken Corpus sentences read aloud by the author; no model has heard them',stories:true},
+    {id:'wubench',label:'Podcasts & storytelling',title:'WenetSpeech-Wu-Bench: podcasts, broadcast, storytelling'},
+    {id:'magicdata',label:'Phone conversation',title:'MagicData Shanghai Dialect Conversational Speech Corpus: two speakers on the phone',stories:true}];
+  const pages=clips.filter(c=>c.aggregate);
+  const groups=GROUPS.map(g=>({...g,clips:pages.filter(c=>c.set===g.id)})).filter(g=>g.clips.length);
+  const mins=l=>(l.reduce((a,c)=>a+c.seconds,0)/60).toFixed(1);
+  // mean = average of per-clip CER (the README's headline); corpus = all errors / all characters
+  const pool=(m,list)=>{
+    const dn=list.filter(c=>cells[m][c.id].status==='done');
+    if(!dn.length) return {n:0,N:list.length,mean:null,corpus:null};
+    let s=0,e=0,r=0; dn.forEach(c=>{const q=cells[m][c.id].scores[k]; s+=q.cer; e+=q.edits; r+=q.refLen});
+    return {n:dn.length,N:list.length,mean:s/dn.length,corpus:e/r}};
+  const head=p=>useMean?p.mean:p.corpus;
+  const cnt=p=>p.n<p.N?` <span class="warn small">${p.n}/${p.N}</span>`:'';
+  // rules/flags.toml: ‡ familiar data (the set closely resembles that model's training data); hover for the evidence
+  const flagOf=(m,g)=>(doc.flags||[]).find(f=>f.model===m&&(f.set===g||f.set==='*'));
+  const mark=(m,g)=>{const f=flagOf(m,g);return f?` <span class="flag" title="${esc(f.note)}">‡</span>`:''};
+
+  // Scores: one row per model (open models, then closed APIs), one column per test set, one number per cell
+  const scoreCell=(m,g)=>{const p=pool(m,g.clips),v=head(p);
+    return `<td>${v==null?'<span class="mut">–</span>':
+      `<span class="big ${cls(v)}">${pct(v)}</span>${mark(m,g.id)}${p.n<p.N?`<span class="cnt warn">${p.n}/${p.N}</span>`:''}`}</td>`};
+  const isClosed=m=>!!info(m).closed;
+  const section=(name,list)=>list.length?`<tr class="sect"><td colspan="${groups.length+1}">${name}</td></tr>`+
+    list.map(m=>`<tr><td title="${nm(m)}${info(m).family?' · '+esc(info(m).family):''}"><b>${base(m)}</b></td>${groups.map(g=>scoreCell(m,g)).join('')}</tr>`).join(''):'';
+  $('summary').innerHTML=`<tr><th>${useMean?'average clip CER':'corpus CER'}</th>${groups.map(g=>
+      `<th class="brw" data-g="${g.id}" title="${esc(g.title)}: click to browse its clips"><span class="dsn">${g.label}</span><div class="small mut">${g.clips.length} clips · ${mins(g.clips)} min</div></th>`).join('')}</tr>`+
+    section('Open models',models.filter(m=>!isClosed(m)))+section('Closed APIs',models.filter(isClosed))+
+    `<tr><td colspan="${groups.length+1}" class="small mut">– not run on that set${(doc.flags||[]).length?" · ‡ familiar data: the set closely resembles that model's training data (same lab's collection, or same transcription style), so its score is probably better than on new audio · hover a marker for the evidence":''}</td></tr>`;
+  document.querySelectorAll('#summary th.brw').forEach(th=>th.onclick=()=>{
+    browse=th.dataset.g;remember('browse',browse);render();$('browser').scrollIntoView({behavior:'smooth',block:'start'})});
+
+  // Models: name (base model), then exactly how it was run
+  $('models').innerHTML=models.map(m=>{const i=info(m);return `<tr><td style="width:280px"><b>${nm(m)}</b></td><td class="mut">${esc(i.detail||'')}${i.revision?` <code>rev ${esc(i.revision)}</code>`:''}</td></tr>`}).join('');
+
+  const stat=(x)=>{
+    if(x.status==='done'){const v=x.scores[k].cer;return `<span class="${cls(v)}">${pct(v)}</span>`}
+    if(x.status==='running')return '<span class="spin"></span> running';
+    if(x.status==='error')return '<span class="cer-bad">error</span>';
+    if(x.status==='skipped')return `<span class="mut" title="${esc(x.note||'not run')}">–</span>`;
+    return '<span class="mut">pending</span>'};
+  const poolCell=p=>head(p)==null?'<span class="mut">–</span>':`<span class="big ${cls(head(p))}">${pct(head(p))}</span>${cnt(p)}`;
+  const pageRows=(list,indent)=>list.map(c=>`<tr class="part"><td class="${indent}">${c.id}</td>${models.map(m=>
+      `<td class="cell" data-m="${m}" data-c="${c.id}">${stat(cells[m][c.id])}</td>`).join('')}</tr>`).join('');
+  const storyRow=(st,list)=>{  // a conversation (MagicData) or text (SSC): its own total, opening into its clips
+    const parts=list.filter(c=>storyOf(c.id)===st), open=openStories.has(st);
+    return `<tr class="story"><td class="tw" data-story="${st}">${open?'▾':'▸'} <b>${st.replace(/^ssc-/,'')}</b> <span class="mut small">${parts.length} clips</span></td>`+models.map(m=>`<td>${poolCell(pool(m,parts))}</td>`).join('')+'</tr>'
+      +(open?pageRows(parts,'indent'):'')};
+
+  // Browse clips: one test set at a time, one row per clip, one column per model
+  const bg=groups.find(g=>g.id===browse)||groups[0];
+  $('tabs').innerHTML=groups.map(g=>`<button data-g="${g.id}" class="${g===bg?'on':''}">${g.label} <span class="small">${g.clips.length}</span></button>`).join('');
+  $('sort').value=sortBy;
+  const cersOf=c=>models.map(m=>cells[m][c.id]).filter(x=>x.status==='done').map(x=>x.scores[k].cer);
+  const rank={worst:c=>{const v=cersOf(c);return v.length?v.reduce((a,b)=>a+b,0)/v.length:-1},
+              spread:c=>{const v=cersOf(c);return v.length>1?Math.max(...v)-Math.min(...v):-1}};
+  // best / agree are worst / spread reversed; clips no model has done yet go last either way
+  const by={worst:['worst',-1],best:['worst',1],spread:['spread',-1],agree:['spread',1]}[sortBy];
+  const sorted=list=>!by?list:[...list].sort((a,b)=>{const x=rank[by[0]](a),y=rank[by[0]](b);
+    return x<0||y<0?(x<0)-(y<0):by[1]*(x-y)});
+  const rows=bg.stories&&sortBy==='order'?[...new Set(bg.clips.map(c=>storyOf(c.id)))].map(st=>storyRow(st,bg.clips)).join('')
+    :pageRows(sorted(bg.clips),'');
+  const totalRow=`<tr class="group"><td><b>${esc(bg.label)}</b> <span class="mut small">all ${bg.clips.length} clips · ${mins(bg.clips)} min</span></td>`+
+    models.map(m=>{const p=pool(m,bg.clips);return `<td>${poolCell(p)}${head(p)==null?'':mark(m,bg.id)}</td>`}).join('')+'</tr>';
+  $('grid').innerHTML=`<tr><th></th>${models.map(m=>`<th title="${nm(m)}">${mname(m)}</th>`).join('')}</tr>`+totalRow+rows;
+  document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{browse=b.dataset.g;remember('browse',browse);render()});
+  $('sort').onchange=e=>{sortBy=e.target.value;remember('sortBy',sortBy);render()};
+  document.querySelectorAll('.tw').forEach(td=>td.onclick=()=>{const s=td.dataset.story;openStories.has(s)?openStories.delete(s):openStories.add(s);render()});
+  document.querySelectorAll('.cell').forEach(td=>{
+    if(sel&&td.dataset.c===sel[1]){td.classList.toggle('selA',td.dataset.m===sel[0]);td.classList.toggle('selB',td.dataset.m===cmp)}
+    td.onclick=e=>{
+      const m=td.dataset.m,c=td.dataset.c;
+      if((e.shiftKey||e.metaKey)&&sel&&sel[1]===c&&m!==sel[0]) cmp=cmp===m?null:m;  // second model, same clip
+      else{ if(!sel||sel[1]!==c) cmp=null; if(cmp===m) cmp=null; sel=[m,c] }
+      render();
+    }});
+  detail();
+}
+// Character alignment of two strings -> [[kind, a, b]] runs, kind eq|sub|del (only in a)|ins (only in b); same shape as the server's diff.
+function align(a,b){
+  a=Array.from(a);b=Array.from(b);const n=a.length,m=b.length,W=m+1,D=new Uint32Array((n+1)*W);
+  for(let i=0;i<=n;i++)D[i*W]=i;for(let j=0;j<=m;j++)D[j]=j;
+  for(let i=1;i<=n;i++)for(let j=1;j<=m;j++)
+    D[i*W+j]=Math.min(D[(i-1)*W+j-1]+(a[i-1]===b[j-1]?0:1),D[(i-1)*W+j]+1,D[i*W+j-1]+1);
+  const out=[];const push=(k,x,y)=>{const l=out[out.length-1];if(l&&l[0]===k){l[1]+=x;l[2]+=y}else out.push([k,x,y])};
+  let i=n,j=m;
+  while(i||j){
+    if(i&&j&&D[i*W+j]===D[(i-1)*W+j-1]+(a[i-1]===b[j-1]?0:1)){push(a[i-1]===b[j-1]?'eq':'sub',a[i-1],b[j-1]);i--;j--}
+    else if(i&&D[i*W+j]===D[(i-1)*W+j]+1){push('del',a[i-1],'');i--}
+    else{push('ins','',b[j-1]);j--}
+  }
+  return out.reverse().map(([k,x,y])=>[k,[...x].reverse().join(''),[...y].reverse().join('')]);
+}
+const hypOf=d=>d.map(([k,r,h])=>k==='del'?'':h).join('');  // normalised model output, rebuilt from its diff
+const LEGEND=`<div class="legend"><span><span class="seg sub">&nbsp;&nbsp;</span> substituted</span><span><span class="seg del">&nbsp;&nbsp;</span> missing from output</span><span><span class="seg ins">&nbsp;&nbsp;</span> extra in output</span></div>`;
+function detail(){
+  const el=$('detail');
+  document.body.classList.toggle('sheet',!!sel);
+  if(!sel){el.hidden=true;return}
+  const [m,cid]=sel, x=doc.cells[m][cid];
+  const y=cmp&&doc.cells[cmp][cid]&&doc.cells[cmp][cid].status==='done'&&x.scores&&x.scores[key()].diff?doc.cells[cmp][cid]:null;
+  el.hidden=false;
+  // a fresh clone has no audio (MagicData's licence; the SSC reader's voice isn't published), so no player there
+  let h=`<button class="close" id="close" title="close (Esc)">✕ close</button><b>${cid}</b> · ${nm(m)}${y?` <span class="mut">vs</span> ${nm(cmp)}`:''} ${doc.snapshot?'':`<div class="row"><audio controls preload="none" src="/clips/${cid}.wav"></audio></div>`}`;
+  // compare-with chips: every other model that finished this clip
+  const others=doc.models.filter(o=>o!==m&&doc.cells[o][cid].status==='done');
+  if(x.status==='done'&&others.length) h+=`<div class="row chips"><span class="small mut">compare with</span>`+
+    others.map(o=>`<button data-cmp="${o}" class="${o===cmp?'on':''}">${base(o)} <span class="${cls(doc.cells[o][cid].scores[key()].cer)}">${pct(doc.cells[o][cid].scores[key()].cer)}</span></button>`).join('')+
+    (y?`<button data-cmp="">✕ stop comparing</button>`:'')+'</div>';
+  if(x.status==='error') h+=`<div class="err">${esc(x.error)}</div>`;
+  else if(x.status==='done'&&!x.scores[key()].diff)  // a set whose licence doesn't allow republishing its text
+    h+=`<div class="mut">CER ${pct(x.scores[key()].cer)} · this set's reference and transcripts aren't published (its licence doesn't allow it), so there's no diff to show.</div>`;
+  else if(x.status==='done'&&!y){
+    const d=x.scores[key()].diff;
+    h+=`${LEGEND}
+    <div class="row"><div class="lbl">reference (normalised)</div><div class="diff">${diffHtml(d,'ref')}</div></div>
+    <div class="row"><div class="lbl">model output (normalised)</div><div class="diff">${diffHtml(d,'hyp')}</div></div>
+    <div class="row"><div class="lbl">raw output, exactly as the model wrote it</div><div class="mut">${esc(x.text)}</div></div>
+    <div class="mut">${x.seconds?`took ${x.seconds}s (${x.rtf}× realtime) · `:''}CER ${pct(x.scores[key()].cer)}</div>`;
+  } else if(x.status==='done'){
+    const dA=x.scores[key()].diff, dB=y.scores[key()].diff||[], ab=align(hypOf(dA),hypOf(dB));
+    const nDiff=ab.filter(o=>o[0]!=='eq').length;
+    const side=(tag,name,c,d)=>`<div><div class="lbl"><span class="tag${tag}">${tag}</span>${name} · CER ${pct(c.scores[key()].cer)}</div>
+      <div class="diff">${diffHtml(d,'hyp')}</div><div class="small mut" style="margin-top:4px">raw output, exactly as written: ${esc(c.text)}</div></div>`;
+    h+=`${LEGEND}
+    <div class="row"><div class="lbl">reference (normalised)</div><div class="diff">${esc(dA.map(([k,r])=>k==='ins'?'':r).join(''))}</div></div>
+    <div class="row pair">${side('A',nm(m),x,dA)}${side('B',nm(cmp),y,dB)}</div>
+    <div class="row"><div class="lbl">where A and B disagree · ${nDiff?`${nDiff} place${nDiff>1?'s':''}`:'identical after normalising'}</div>
+      <div class="diff"><span class="tagA">A</span>${diffHtml(ab,'ref')}</div>
+      <div class="diff"><span class="tagB">B</span>${diffHtml(ab,'hyp')}</div>
+      <div class="small mut">highlighted: characters only one of the two models wrote (yellow: A has it, B doesn't · blue: B has it, A doesn't · red: they wrote different characters)</div></div>`;
+  } else h+=`<div class="mut">${x.status}</div>`;
+  el.innerHTML=h;
+  el.querySelectorAll('[data-cmp]').forEach(b=>b.onclick=()=>{cmp=b.dataset.cmp||null;render()});
+  $('close').onclick=closeDetail;
+}
+function closeDetail(){sel=null;cmp=null;render()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sel)closeDetail()});
+async function poll(){
+  try{
+    const r=await fetch('/latest.json',{cache:'no-store'});
+    if(r.ok){
+      const next=await r.json();
+      const keep=sel&&$('detail').querySelector('audio');
+      const playing=keep&&!keep.paused;
+      doc=next;
+      if(!playing) render(); /* else: don't rebuild the page under a playing clip */
+    }
+  }catch(e){}
+  // published results never change; a finished run only changes when a new one starts
+  if(!(doc&&doc.snapshot)) setTimeout(poll,doc&&doc.state==='finished'?5000:1000);
+}
+poll();
+</script>
+</body>
+</html>

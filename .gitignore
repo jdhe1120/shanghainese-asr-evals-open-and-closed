@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+cache/
+runs/
+.env
+clips/
+Shanghai_Dialect_Conversational_Speech_Corpus/
+# U Alberta Shanghai Spoken Corpus (SSC 1.0) text: licence unclear, keep local
+Writing Only SSC Part 1/
+Writing-Only Shanghai Spoken Corpus (version-1-modified)/
+.DS_Store
+recordings/
+datasets/
+/models/

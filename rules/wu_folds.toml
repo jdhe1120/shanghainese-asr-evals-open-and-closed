@@ -1,0 +1,381 @@
+# Wu spelling folds: which characters count as the same word when scoring the "fold" view.
+#
+# The author's judgement of which swaps are reasonably the same word, made by listening to each one with its audio (first
+# pass 2026-10-13). A judgement call, not a linguistic standard.
+# Change any answer by editing its `decision` here. Git keeps the history.
+#
+# decision: "same"      -> counts as a match
+#           "different" -> stays an error (different word, or Mandarin for Wu)
+#           "unsure"    -> stays an error for now; revisit later
+#
+# RULE (2026-10-13): fold when the model wrote the SAME WORD with a different character, including when the
+# Mandarin-looking character is itself the standard Wu spelling (我 not 吾, 人 not 拧, 啥 not 撒: Qian Nairong's
+# 《上海话大词典》 prefers the etymological 本字, which is often the Mandarin character read the Wu way). It stays an
+# error when the model swapped in a DIFFERENT, Mandarin word (这 for 搿, 掉 for 脱, 吧 for 伐). Same principle as
+# the Cantonese evals; Shanghainese just has more legitimate Mandarin-looking spellings.
+#
+# PAIRS, NOT CHAINS. Every two characters *inside one entry* are equal; nothing chains across entries. So 末=么 and
+# 么=嘛 do not make 末=嘛 (decided different), and 来=辣, 辣=了 do not make 来=了. Put several characters in one entry
+# only when they are all spellings of one word with no other meaning (e.g. 勿伐弗不). A "different" entry wins over
+# any "same" entry for that pair. Comparison runs after OpenCC t2s, so write Simplified characters.
+
+# ---- same ----
+
+[[fold]]
+graphs = "勿伐弗不"
+decision = "same"
+note = "veh, 'not'. 不 kept although it is the Mandarin graph: some argue 不 is the etymological character (古音 分勿切); Qian Nairong and common Shanghai usage write 勿 (2026-10-13)"
+
+[[fold]]
+graphs = "啥撒"
+decision = "same"
+note = "sa, 'what'"
+
+[[fold]]
+graphs = "人拧"
+decision = "same"
+note = "nyin, 'person'"
+
+[[fold]]
+graphs = "我吾"
+decision = "same"
+note = "ngu, 'I'"
+
+[[fold]]
+graphs = "搿葛格"
+decision = "same"
+note = "gheh, 'this'; 葛末 'then'"
+
+[[fold]]
+graphs = "辣勒垃"
+decision = "same"
+note = "leh, 'at / -ing'"
+
+[[fold]]
+graphs = "末么"
+decision = "same"
+note = "meh, in 葛末"
+
+[[fold]]
+graphs = "呢喃"
+decision = "same"
+
+[[fold]]
+graphs = "呐呢"
+decision = "same"
+
+[[fold]]
+graphs = "向相"
+decision = "same"
+note = "里向 / 屋里向"
+
+[[fold]]
+graphs = "介噶"
+decision = "same"
+note = "搿能介"
+
+[[fold]]
+graphs = "哎诶"
+decision = "same"
+
+[[fold]]
+graphs = "么嘛"
+decision = "same"
+
+[[fold]]
+graphs = "也还"
+decision = "same"
+note = "Listened (a0005-p337, a0009-p44, a0009-p110): the speaker means 'also'; MagicData writes it 还. Cost: a model writing 也 for a real 还 'still' also gets credit; rare (2026-10-13)"
+
+[[fold]]
+graphs = "咯咾"
+decision = "same"
+
+[[fold]]
+graphs = "了唻"
+decision = "same"
+note = "唻 is the stressed form of sentence-final 了 (知乎 source); 没办法唻 / 好唻 (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "呦哟"
+decision = "same"
+
+[[fold]]
+graphs = "个搿"
+decision = "same"
+
+[[fold]]
+graphs = "㑚那"
+decision = "same"
+note = "na, 'you (plural)'"
+
+[[fold]]
+graphs = "拔拨"
+decision = "same"
+note = "peh, 'give'"
+
+[[fold]]
+graphs = "哦啊"
+decision = "same"
+
+[[fold]]
+graphs = "两二"
+decision = "same"
+note = "Listened (a0002-p60, -p254, -p296): speaker says liang; MagicData wrote 二 (a0002 transcriber habit). A reference error, folded for now; see TODO on reference corrections (2026-10-13)"
+
+[[fold]]
+graphs = "乃那"
+decision = "same"
+note = "乃末 / 那么"
+
+[[fold]]
+graphs = "一诶"
+decision = "same"
+note = "Speaker says yi-xie (一些, 'some'); MagicData spells 一 as 诶 here. Pair only: 一 does not fold with 哎/哦 (2026-10-13)"
+
+[[fold]]
+graphs = "哎哦"
+decision = "same"
+
+[[fold]]
+graphs = "噶样"
+decision = "same"
+
+[[fold]]
+graphs = "刮呱"
+decision = "same"
+
+[[fold]]
+graphs = "来辣"
+decision = "same"
+
+[[fold]]
+graphs = "浪哴上"
+decision = "same"
+note = "lang, 'on / at' (基本浪, 网浪向). 上 included: MagicData itself writes 基本上 for lang, so a model writing 上 shouldn't be held to a stricter standard than the reference; 上海/上班 are unaffected since both sides write 上 (2026-10-13)"
+
+[[fold]]
+graphs = "三塞"
+decision = "same"
+note = "se in 勿来三 / 伐来塞 'can't manage'; first pass said different, changed after review (2026-10-13)"
+
+[[fold]]
+graphs = "呃个"
+decision = "same"
+note = "gheh, attributive / sentence-final; MagicData writes 呃, models 个. Split from the old 的/呃/个 class (2026-10-13)"
+
+[[fold]]
+graphs = "的得"
+decision = "same"
+note = "teh in 有得 'have', 会得 'can': MagicData writes 的, models 得 (2026-10-13)"
+
+[[fold]]
+graphs = "咾唠"
+decision = "same"
+note = "two spellings of lau; Qian uses 咾; not in this data (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "特脱"
+decision = "same"
+note = "teh, completive (坏脱, 忘记脱); 脱 is the usual spelling (2026-10-13)"
+
+[[fold]]
+graphs = "伊埃"
+decision = "same"
+note = "'that': 伊 i (older speakers) / 埃 e (middle, younger), 埃面搭 / 伊面搭 (上海话 Wikipedia) (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "搭的"
+decision = "same"
+note = "搭 'place' in 埃面搭; MagicData spelled it 的 (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "媳新"
+decision = "same"
+note = "daughter-in-law: Wu 新妇 sin-vu vs Mandarin 媳妇; MagicData writes both in one sentence (like 上/浪) (2026-10-13, second pass)"
+
+# ---- unsure (counted as errors for now) ----
+
+# (none)
+
+# ---- different (counted as errors) ----
+
+[[fold]]
+graphs = "了辣"
+decision = "different"
+note = "Progressive 辣辣/辣海 is a different word from completion 了 (朱佳蕾 2020); Qwen wrote 伊了了想 for 伊辣辣想 (2026-10-13, second pass). Confirmed on SSC 侬买辣伐 / 讲辣对个 (2026-11-04)"
+
+[[fold]]
+graphs = "了勒"
+decision = "different"
+note = "勒 here is the complement marker in 吃勒好/穿勒好 (Mandarin 得), not 了 (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "了呃"
+decision = "different"
+note = "gheh vs leq, different syllables (对呃 vs 对了); flip to same if you hear leq on A26 (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "掉特"
+decision = "different"
+note = "掉 is the Mandarin word for Wu 脱/特 (2026-10-13, Mandarin-word rule)"
+
+[[fold]]
+graphs = "伐吧"
+decision = "different"
+note = "伐 va is the Wu yes/no particle (~吗); 吧 is a different Mandarin particle (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "个了"
+decision = "different"
+note = "gheh vs leq, different words (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "敲考"
+decision = "different"
+note = "mishearing: 敲鼓 vs 考古 (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "的呃"
+decision = "different"
+note = "Mandarin 的 for Wu gheh (2026-10-13, Mandarin-word rule)"
+
+[[fold]]
+graphs = "的个"
+decision = "different"
+note = "Mandarin 的 for Wu gheh 个 (2026-10-13, Mandarin-word rule)"
+
+[[fold]]
+graphs = "搿这"
+decision = "different"
+note = "这 is the Mandarin word for Wu 搿 (2026-10-13, Mandarin-word rule)"
+
+[[fold]]
+graphs = "呃啊"
+decision = "different"
+
+[[fold]]
+graphs = "买卖"
+decision = "different"
+
+[[fold]]
+graphs = "嘛末"
+decision = "different"
+
+[[fold]]
+graphs = "跍过"
+decision = "different"
+
+[[fold]]
+graphs = "刚讲"
+decision = "different"
+
+[[fold]]
+graphs = "咾葛"
+decision = "different"
+
+[[fold]]
+graphs = "呃搿"
+decision = "different"
+note = "both gheh but 搿 = 'this', 呃 = particle; only 个 spells both (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "伐要"
+decision = "different"
+note = "speaker likely says 覅 fiao (勿要, one syllable); a per-character fold can't match it (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "个饿"
+decision = "different"
+note = "MagicData typo: 搿饿车子 (should be 呃/个); see TODO reference corrections (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "又有"
+decision = "different"
+note = "MagicData typo: 伊又趟 (should be 有趟); see TODO reference corrections (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "排牌"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "侪在"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "侬呃"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "也就"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "扁煸"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "煸边"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "呃那"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "子对"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "一菜"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "呢拿"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "叫要"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "头直"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+[[fold]]
+graphs = "然随"
+decision = "different"
+note = "mishearing (2026-10-13, second pass)"
+
+
+[[fold]]
+graphs = "伐哦"
+decision = "different"
+note = "va question particle is 伐; 哦 is a different particle, so writing 哦 for va is an error (SSC's original spelling was 哦) (2026-11-04)"
+
+[[fold]]
+graphs = "介假"
+decision = "same"
+note = "ka 'so': SSC writes 侬假勿开心 for 侬介勿开心 (2026-11-04)"
+
+[[fold]]
+graphs = "闲哎诶唉"
+decision = "same"
+note = "interjection: SSC writes 闲 (闲，搿里向好卡下来点); models write 哎/诶/唉. Pairs only: 闲 does not fold with 哦 (2026-11-04)"
+
+[[fold]]
+graphs = "录落"
+decision = "different"
+note = "一直好录个: the reading has 录, models wrote 落 (2026-11-04)"

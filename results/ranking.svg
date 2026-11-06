@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1002" height="498" viewBox="0 0 1002 498" role="img" aria-label="Mean per-clip CER, spellings folded, digits as Chinese numerals. Sets scored separately." font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif">
+<rect width="1002" height="498" rx="8" fill="#fcfcfb"/>
+<text x="20" y="32" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Character error rate: lower is better</text>
+<text x="20" y="54" font-size="13" fill="#52514e" text-anchor="start" font-weight="400">Mean per-clip CER, spellings folded, digits as Chinese numerals. Sets scored separately.</text>
+<rect x="20" y="66" width="12" height="12" rx="3" fill="#2a78d6"/>
+<text x="38" y="77" font-size="13" fill="#52514e" text-anchor="start" font-weight="400">Open model</text>
+<rect x="120" y="66" width="12" height="12" rx="3" fill="#eb6834"/>
+<text x="138" y="77" font-size="13" fill="#52514e" text-anchor="start" font-weight="400">Closed API</text>
+<text x="340" y="142" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Step-Audio2-Wu-ASR</text>
+<text x="340" y="172" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Conformer-U2pp-Wu</text>
+<text x="340" y="202" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Whisper-medium-Wu</text>
+<text x="340" y="232" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">CN-MultiDialect-ASR</text>
+<text x="340" y="262" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Qwen3-ASR-1.7B</text>
+<text x="340" y="292" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Dolphin-CN-Dialect small</text>
+<text x="340" y="322" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Fun-ASR-Nano-2512</text>
+<text x="340" y="352" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Qwen3-Omni-30B-A3B + Shanghainese prompt</text>
+<text x="340" y="382" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Qwen3-Omni-30B-A3B</text>
+<text x="340" y="412" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Azure Speech</text>
+<text x="340" y="442" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="400">Gemini 4 Argon</text>
+<text x="352" y="114" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Podcasts &amp; storytelling (300 clips)</text>
+<line x1="352" y1="122" x2="352" y2="450" stroke="#e4e3df"/>
+<path d="M352 128h38.7a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-38.7z" fill="#2a78d6"/>
+<text x="400.72062248287233" y="142" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">11.8%</text>
+<path d="M352 158h40.4a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-40.4z" fill="#2a78d6"/>
+<text x="402.3664972777335" y="172" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">12.3%</text>
+<path d="M352 188h56.5a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-56.5z" fill="#2a78d6"/>
+<text x="418.49027343553087" y="202" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">16.7%</text>
+<path d="M352 218h41.9a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-41.9z" fill="#2a78d6"/>
+<text x="403.8540569692707" y="232" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">12.7%</text>
+<path d="M352 248h71.1a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-71.1z" fill="#2a78d6"/>
+<text x="433.1292464223064" y="262" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">20.7%</text>
+<path d="M352 278h72.7a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-72.7z" fill="#2a78d6"/>
+<text x="434.6580534026064" y="292" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">21.2%</text>
+<path d="M352 308h103.3a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-103.3z" fill="#2a78d6"/>
+<text x="465.29486499610107" y="322" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">29.6%</text>
+<path d="M352 338h172.7a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-172.7z" fill="#2a78d6"/>
+<text x="534.7102931846218" y="352" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">48.8%</text>
+<path d="M352 368h200.8a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-200.8z" fill="#2a78d6"/>
+<text x="562.7706465452673" y="382" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">56.5%</text>
+<path d="M352 398h108.2a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-108.2z" fill="#eb6834"/>
+<text x="470.15953803694566" y="412" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">31.0%</text>
+<path d="M352 428h175.4a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-175.4z" fill="#eb6834"/>
+<text x="537.4067326158072" y="442" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">49.5%</text>
+<text x="672" y="114" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Phone conversation (300 clips)</text>
+<line x1="672" y1="122" x2="672" y2="450" stroke="#e4e3df"/>
+<path d="M672 128h37.7a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-37.7z" fill="#2a78d6"/>
+<text x="719.664167106052" y="142" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">11.5%</text>
+<path d="M672 158h60.9a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-60.9z" fill="#2a78d6"/>
+<text x="742.914637521186" y="172" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">17.9%</text>
+<path d="M672 188h58.8a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-58.8z" fill="#2a78d6"/>
+<text x="740.849570333792" y="202" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">17.4%</text>
+<path d="M672 218h28.2a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-28.2z" fill="#2a78d6"/>
+<text x="710.1843852506412" y="232" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">8.9%</text>
+<path d="M672 248h54.9a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-54.9z" fill="#2a78d6"/>
+<text x="736.8729747446575" y="262" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">16.3%</text>
+<path d="M672 278h65.7a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-65.7z" fill="#2a78d6"/>
+<text x="747.6621012133389" y="292" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">19.2%</text>
+<path d="M672 308h89.2a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-89.2z" fill="#2a78d6"/>
+<text x="771.1752837056957" y="322" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">25.7%</text>
+<path d="M672 338h91.9a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-91.9z" fill="#2a78d6"/>
+<text x="773.9127184926799" y="352" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">26.5%</text>
+<path d="M672 368h106.0a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-106.0z" fill="#2a78d6"/>
+<text x="787.9681176637987" y="382" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">30.4%</text>
+<path d="M672 398h123.5a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-123.5z" fill="#eb6834"/>
+<text x="805.5153846320206" y="412" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">35.2%</text>
+<path d="M672 428h246.0a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-246.0z" fill="#eb6834"/>
+<text x="928.0" y="442" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="400">69.0%</text>
+</svg>
